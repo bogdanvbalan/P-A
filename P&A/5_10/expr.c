@@ -77,7 +77,10 @@ int main(int argc, char **argv) {
 	int count_args = 0;
 	int numbers_length = 0;
 	int operators_length = 0;
+	int numbers_index;
+	int operators_index;
 	int i;
+	int result;
 	char *numbers[100];
 	char *operators[100];
 	char *arguments[200];
@@ -103,7 +106,7 @@ int main(int argc, char **argv) {
 	}
 
 	/* Check if the arguments are well formed */
-	if (legal_expr) {
+	if (legal_expr(arguments, count_args, operators_length, numbers_length)) {
 		printf("The expression is legal.\n");
 	}
 	else {
@@ -111,6 +114,32 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
-	
+	numbers_index = numbers_length - 1;
+	operators_index = 0;
+	result = atoi(numbers[numbers_index--]);
+
+	while (numbers_index >= 0) {
+		switch (*(operators[operators_index])) {
+			case '+':
+				result += atoi(numbers[numbers_index]);
+				break;
+			case '-':
+				result -= atoi(numbers[numbers_index]);
+				break;
+			case '/':
+				result /= atoi(numbers[numbers_index]);
+				break;
+			case '*':
+				result *= atoi(numbers[numbers_index]);
+				break;
+			default:
+				break;
+		}
+		numbers_index--;
+		operators_index++;
+	}
+
+	printf("The result is: %d\n", result);
+
 	return 0;
 }
